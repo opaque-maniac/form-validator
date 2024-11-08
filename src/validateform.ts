@@ -14,7 +14,7 @@ export const validateForm = (
   const errors: FormValidationErrors = {};
   let valid: boolean = false;
 
-  if (Object.keys(data).length !== 0) {
+  if (Object.keys(data).length === 0) {
     throw new Error("Empty object passed as form data");
   }
 
