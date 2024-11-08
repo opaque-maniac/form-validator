@@ -1,5 +1,5 @@
-import { RuleObj } from "./types";
-import { validateForm } from "./validateform";
+import type { RuleObj } from "./types";
+import validateForm from "./validateform";
 
 const rules: RuleObj = {
   email: {
@@ -20,12 +20,17 @@ const rules: RuleObj = {
       value: true,
       error: "Password must contain a special character",
     },
+    pattern: {
+      value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$/,
+      error:
+        "Password must contain at least one uppercase letter, one lowercase letter, one number and one special character",
+    },
   },
 };
 
 const data = {
   email: "mbithimark8@gmail.com",
-  password: "Caroline1992",
+  password: "Carolineee@1992",
 };
 
-validateForm(data, rules);
+console.log(validateForm(data, rules));

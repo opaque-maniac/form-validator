@@ -9,6 +9,7 @@
   ],
   "scripts": {
     "format": "prettier --write .",
+    "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

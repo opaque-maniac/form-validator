@@ -1,7 +1,7 @@
-import { RuleConditions, ValidateFieldReturn } from "./types";
+import type { RuleConditions, ValidateFieldReturn } from "./types";
 
 // Validate input field
-export const validateField = (
+const validateField = (
   label: string,
   field: string,
   rule: RuleConditions,
@@ -45,9 +45,11 @@ export const validateField = (
 
   if (pattern) {
     const regex = pattern instanceof RegExp ? pattern : pattern.value;
-    const condition = !regex.test(field) || typeof regex === "undefined";
+    if (!regex) throw new Error(`Field ${label} has no pattern`);
+
+    const condition = !regex.test(field);
     const error =
-      pattern instanceof RegExp || !pattern.error || !regex
+      pattern instanceof RegExp || !pattern.error
         ? `Field ${label} has invalid format`
         : pattern.error;
 
@@ -55,8 +57,11 @@ export const validateField = (
   }
 
   if (minLength) {
+    if (typeof minLength !== "number" && !minLength.value)
+      throw new Error(`Field ${label} has no length`);
+
     const length = typeof minLength === "number" ? minLength : minLength.value;
-    const condition = field.length < length || typeof length === "undefined";
+    const condition = field.length < length;
     const error =
       typeof minLength === "number" || !minLength.error
         ? `Field ${label} is shorter than ${length ?? "required"}`
@@ -66,8 +71,11 @@ export const validateField = (
   }
 
   if (maxLength) {
+    if (typeof maxLength !== "number" && !maxLength.value)
+      throw new Error(`Field ${label} has no length`);
+
     const length = typeof maxLength === "number" ? maxLength : maxLength.value;
-    const condition = field.length > length || typeof length === "undefined";
+    const condition = field.length > length;
     const error =
       typeof maxLength === "number" || !maxLength.error
         ? `Field ${label} is longer than ${length ?? "required"}`
@@ -78,8 +86,11 @@ export const validateField = (
 
   if (hasCap) {
     const cap = typeof hasCap === "boolean" ? hasCap : hasCap.value;
+    if (typeof cap === "undefined")
+      throw new Error(`Field ${label} has no uppercase value`);
+
     const regex = /[A-Z]/;
-    const condition = !regex.test(field) || typeof cap === "undefined";
+    const condition = !regex.test(field);
     const error =
       typeof hasCap === "boolean" || !hasCap.error
         ? `Field ${label} does not have an uppercase character`
@@ -90,8 +101,11 @@ export const validateField = (
 
   if (hasLower) {
     const lower = typeof hasLower === "boolean" ? hasLower : hasLower.value;
+    if (typeof lower === "undefined")
+      throw new Error(`Field ${label} has no lowercase value`);
+
     const regex = /[a-z]/;
-    const condition = !regex.test(field) || typeof lower === "undefined";
+    const condition = !regex.test(field);
     const error =
       typeof hasLower === "boolean" || !hasLower.error
         ? `Field ${label} does not have a lowercase character`
@@ -103,8 +117,11 @@ export const validateField = (
   if (hasSpecial) {
     const special =
       typeof hasSpecial === "boolean" ? hasSpecial : hasSpecial.value;
+    if (typeof special === "undefined")
+      throw new Error(`Field ${label} has no special value`);
+
     const regex = /[^\w\s]/;
-    const condition = !regex.test(field) || typeof special === "undefined";
+    const condition = !regex.test(field);
     const error =
       typeof hasSpecial === "boolean" || !hasSpecial.error
         ? `Field ${label} does not have a special character`
@@ -115,8 +132,11 @@ export const validateField = (
 
   if (hasNum) {
     const numm = typeof hasNum === "boolean" ? hasNum : hasNum.value;
+    if (typeof numm === "undefined")
+      throw new Error(`Field ${label} has no number value`);
+
     const regex = /[0-9]/;
-    const condition = !regex.test(field) || typeof numm === "undefined";
+    const condition = !regex.test(field);
     const error =
       typeof hasNum === "boolean" || !hasNum.error
         ? `Field ${label} does not have a number`
@@ -126,12 +146,21 @@ export const validateField = (
   }
 
   if (equal) {
+    if (typeof equal !== "string" && !equal.value)
+      throw new Error(`Field ${label} has no equal value`);
+
     const isEqual =
       typeof equal === "string" ? equal === field : field === equal.value;
     const condition = !isEqual;
     const error =
       typeof equal === "string" || !equal.error
-        ? `Field ${label} not equal to ${typeof equal === "string" ? equal : equal.value}`
+        ? `Field ${label} not equal to ${
+            typeof equal === "string"
+              ? equal
+              : typeof equal.value === "string"
+                ? equal.value
+                : "required value"
+          }`
         : equal.error;
 
     addError(condition, error);
@@ -142,3 +171,5 @@ export const validateField = (
     errors,
   };
 };
+
+export default validateField;
