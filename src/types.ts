@@ -1,31 +1,53 @@
 export interface RuleValues {
-    value: number | string | boolean | RegExp
-    error?: string
+  error?: string;
+}
+
+export interface BoolRuleValues extends RuleValues {
+  value: boolean;
+}
+
+export interface RegRuleValues extends RuleValues {
+  value: RegExp;
+}
+
+export interface NumRuleValues extends RuleValues {
+  value: number;
+}
+
+export interface StrRuleValues extends RuleValues {
+  value: string;
+}
+
+export interface RuleConditions {
+  required?: boolean | BoolRuleValues;
+  pattern?: RegExp | RegRuleValues;
+  minLength?: number | NumRuleValues;
+  maxLength?: number | NumRuleValues;
+  hasCap?: boolean | BoolRuleValues;
+  hasLower?: boolean | BoolRuleValues;
+  hasNum?: boolean | BoolRuleValues;
+  hasSpecial?: boolean | BoolRuleValues;
+  equal?: string | StrRuleValues;
 }
 
 export interface RuleObj {
-    [k: string]: {
-        required: boolean | RuleValues
-        pattern?: RuleValues
-        minLength?: number | RuleValues
-        maxLength?: number | RuleValues
-        hasCap?: boolean | RuleValues
-        hasNum?: boolean | RuleValues
-        hasSpecial?: boolean | RuleValues
-        equal?: string
-    }
+  [field: string]: RuleConditions;
 }
 
 export interface FormValueData {
-    [k: string]: string
+  [field: string]: string;
 }
 
 export interface FormValidationErrors {
-    [k: string]: string
+  [field: string]: string[];
 }
 
 export interface ValidationReturn {
-    valid: boolean
-    errors: FormValidationErrors
+  valid: boolean;
+  errors: FormValidationErrors;
 }
 
+export interface ValidateFieldReturn {
+  valid: boolean;
+  errors: string[];
+}

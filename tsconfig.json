@@ -1,18 +1,14 @@
 {
-    "compilerOptions": {
-        "module": "CommonJS",
-        "target": "ES2015",
-        "sourceMap": true,
-        "outDir": "./dist",
-        "noImplicitAny": true,
-        "declaration": true,
-        "strict": true,
-        "useUnknownInCatchVariables": true
-    },
-    "include": [
-        "src/**/*.ts"
-    ],
-    "exclude": [
-        "node_modules"
-    ]
+  "compilerOptions": {
+    "module": "CommonJS",
+    "target": "ES2015",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "noImplicitAny": true,
+    "declaration": true,
+    "strict": true,
+    "useUnknownInCatchVariables": true
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules"]
 }
