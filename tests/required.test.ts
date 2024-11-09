@@ -32,6 +32,11 @@ describe("Testing required field with acceptable input for the required field", 
     const result = validateField(label, "", { required: { value: false } });
     expect(result).toEqual({ valid: true, errors: [] });
   });
+
+  it("should return valid:true and errors:[] when required is not in rules object", () => {
+    const result = validateField(label, field, { minLength: 2 });
+    expect(result).toEqual({ valid: true, errors: [] });
+  });
 });
 
 describe("Testing required field with unacceptable input", () => {
@@ -62,10 +67,11 @@ describe("Testing required field with unacceptable input", () => {
     ).toThrow("has invalid required value");
   });
 
-  it("should throw an error if required is null", () => {
-    expect(() =>
-      validateField(label, field, { required: null as any }),
-    ).toThrow("has invalid required value");
+  it("should return valid: true, errors:[] required is null", () => {
+    expect(validateField(label, field, { required: null as any })).toEqual({
+      valid: true,
+      errors: [],
+    });
   });
 
   it("should throw an error if required is object with value: null", () => {
@@ -137,9 +143,18 @@ describe("Testing required field with unacceptable input", () => {
     ).toThrow("has invalid required value");
   });
 
-  it("should return valid:true and errors:[] when required is not in rules object", () => {
-    const result = validateField(label, field, { minLength: 2 });
-    expect(result).toEqual({ valid: true, errors: [] });
+  it("should throw an error if required is a function", () => {
+    const square = (x: number) => x * x;
+    expect(() =>
+      validateField(label, field, { required: square as any }),
+    ).toThrow("has invalid required value");
+  });
+
+  it("should throw an error if required is an object with value: function", () => {
+    const square = (x: number) => x * x;
+    expect(() =>
+      validateField(label, field, { required: { value: square as any } }),
+    ).toThrow("has invalid required value");
   });
 
   it("should throw an error if required is an object with value: undefined and error", () => {
@@ -218,6 +233,15 @@ describe("Testing required field with unacceptable input", () => {
     expect(() =>
       validateField(label, field, {
         required: { value: "" as any, error: "wee" },
+      }),
+    ).toThrow("has invalid required value");
+  });
+
+  it("should throw an error if required is an object with value: function and error", () => {
+    const square = (x: number) => x * x;
+    expect(() =>
+      validateField(label, field, {
+        required: { value: square as any, error: "wee" },
       }),
     ).toThrow("has invalid required value");
   });

@@ -42,12 +42,14 @@ export const validateField = (
   };
 
   if (required) {
-    if (typeof required !== "boolean" && typeof required.value === "undefined")
+    if (
+      typeof required === "string" ||
+      (typeof required === "object" && typeof required.value !== "boolean") ||
+      typeof required === "function" ||
+      typeof required === "number"
+    ) {
       throw new Error(`Field ${label} has invalid required value`);
-
-    // check if required.value is a boolean
-    if (typeof required !== "boolean" && typeof required.value !== "boolean")
-      throw new Error(`Field ${label} has invalid required value`);
+    }
 
     const isRequired =
       typeof required === "boolean" ? required : required.value;
@@ -59,11 +61,9 @@ export const validateField = (
 
     addError(condition, error);
   } else {
-    if (typeof required === "string")
+    if (typeof required === "string" || typeof required === "number") {
       throw new Error(`Field ${label} has invalid required value`);
-
-    if (required === null)
-      throw new Error(`Field ${label} has invalid required value`);
+    }
   }
 
   if (pattern) {
@@ -72,6 +72,7 @@ export const validateField = (
       throw new Error(`Field ${label} has invalid pattern value`);
 
     const regex = pattern instanceof RegExp ? pattern : pattern.value;
+
     if (!regex) throw new Error(`Field ${label} has no pattern`);
 
     const condition = !regex.test(field);
@@ -83,9 +84,6 @@ export const validateField = (
     addError(condition, error);
   } else {
     if (typeof pattern === "string")
-      throw new Error(`Field ${label} has invalid pattern value`);
-
-    if (pattern === null)
       throw new Error(`Field ${label} has invalid pattern value`);
   }
 
