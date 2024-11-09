@@ -1,7 +1,17 @@
+/**
+ * @module validateField
+ * @description micro library function for form field validation
+ * Validate input field
+ * @param {string} label - field label
+ * @param {string} field - field value to validate
+ * @param {RuleConditions} rule - validation rules for the field
+ * @returns {ValidateFieldReturn} - object containing validation result
+ */
+
 import type { RuleConditions, ValidateFieldReturn } from "./types";
 
 // Validate input field
-const validateField = (
+export const validateField = (
   label: string,
   field: string,
   rule: RuleConditions,
@@ -32,6 +42,13 @@ const validateField = (
   };
 
   if (required) {
+    if (typeof required !== "boolean" && typeof required.value === "undefined")
+      throw new Error(`Field ${label} has invalid required value`);
+
+    // check if required.value is a boolean
+    if (typeof required !== "boolean" && typeof required.value !== "boolean")
+      throw new Error(`Field ${label} has invalid required value`);
+
     const isRequired =
       typeof required === "boolean" ? required : required.value;
     const condition = isRequired && !field;
@@ -41,9 +58,19 @@ const validateField = (
         : required.error;
 
     addError(condition, error);
+  } else {
+    if (typeof required === "string")
+      throw new Error(`Field ${label} has invalid required value`);
+
+    if (required === null)
+      throw new Error(`Field ${label} has invalid required value`);
   }
 
   if (pattern) {
+    // see if pattern is not a regex or pattern.value is not a regex
+    if (!(pattern instanceof RegExp) && !(pattern.value instanceof RegExp))
+      throw new Error(`Field ${label} has invalid pattern value`);
+
     const regex = pattern instanceof RegExp ? pattern : pattern.value;
     if (!regex) throw new Error(`Field ${label} has no pattern`);
 
@@ -54,6 +81,12 @@ const validateField = (
         : pattern.error;
 
     addError(condition, error);
+  } else {
+    if (typeof pattern === "string")
+      throw new Error(`Field ${label} has invalid pattern value`);
+
+    if (pattern === null)
+      throw new Error(`Field ${label} has invalid pattern value`);
   }
 
   if (minLength) {
@@ -171,5 +204,3 @@ const validateField = (
     errors,
   };
 };
-
-export default validateField;

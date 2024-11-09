@@ -1,13 +1,22 @@
+/**
+ * @module validateform
+ * @description micro library function for form validation
+ * Validate form data
+ * @param {FormValueData} data - form data to validate
+ * @param {RuleObj} rules - validation rules for the form data
+ * @returns {ValidationReturn} - object containing validation result
+ */
+
 import type {
   FormValidationErrors,
   FormValueData,
   RuleObj,
   ValidationReturn,
 } from "./types";
-import validateField from "./validatefield";
+import { validateField } from "./validatefield";
 
 // Validate input form
-const validateForm = (
+export const validateForm = (
   data: FormValueData,
   rules: RuleObj,
 ): ValidationReturn => {
@@ -34,5 +43,3 @@ const validateForm = (
     errors: fErrors,
   };
 };
-
-export default validateForm;
