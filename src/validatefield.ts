@@ -186,9 +186,8 @@ export const validateField = (
   }
 
   if (hasNum) {
-    const numm = typeof hasNum === "boolean" ? hasNum : hasNum.value;
-    if (typeof numm === "undefined")
-      throw new Error(`Field ${label} has no number value`);
+    if (typeof hasNum !== "boolean" && typeof hasNum.value !== "boolean")
+      throw new Error(`Field ${label} has invalid hasNum value`);
 
     const regex = /[0-9]/;
     const condition = !regex.test(field);
