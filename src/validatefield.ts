@@ -119,11 +119,15 @@ export const validateField = (
 
     addError(condition, error);
   } else {
-    if (typeof maxLength === "string" || typeof maxLength === "number")
+    if (typeof maxLength === "string")
       throw new Error(`Field ${label} has invalid maxLength value`);
   }
 
   if (hasCap) {
+    if (typeof hasCap !== "boolean" && typeof hasCap.value !== "boolean") {
+      throw new Error(`Field ${label} has invalid hasCap value`);
+    }
+
     const cap = typeof hasCap === "boolean" ? hasCap : hasCap.value;
     if (typeof cap === "undefined")
       throw new Error(`Field ${label} has no uppercase value`);
@@ -136,6 +140,9 @@ export const validateField = (
         : hasCap.error;
 
     addError(condition, error);
+  } else {
+    if (typeof hasCap === "string" || typeof hasCap === "number")
+      throw new Error(`Field ${label} has invalid hasCap value`);
   }
 
   if (hasLower) {
