@@ -103,8 +103,12 @@ export const validateField = (
   }
 
   if (maxLength) {
-    if (typeof maxLength !== "number" && !maxLength.value)
-      throw new Error(`Field ${label} has no length`);
+    if (
+      (typeof maxLength !== "number" &&
+        (typeof maxLength.value !== "number" || Number.isNaN(pattern))) ||
+      (typeof maxLength === "number" && maxLength < 0)
+    )
+      throw new Error(`Field ${label} has invalid maxLength value`);
 
     const length = typeof maxLength === "number" ? maxLength : maxLength.value;
     const condition = field.length > length;
@@ -114,6 +118,9 @@ export const validateField = (
         : maxLength.error;
 
     addError(condition, error);
+  } else {
+    if (typeof maxLength === "string" || typeof maxLength === "number")
+      throw new Error(`Field ${label} has invalid maxLength value`);
   }
 
   if (hasCap) {
