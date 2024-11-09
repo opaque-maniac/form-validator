@@ -204,7 +204,7 @@ describe("Testing the error message when the field does not contain capital", ()
   const label = "name";
   const field = "john doe";
 
-  it("should return the provided error message for pattern", () => {
+  it("should return the provided error message for capital", () => {
     const errorMessage = "Field name should contain capital";
     const result = validateField(label, field, {
       hasCap: { value: true, error: errorMessage },

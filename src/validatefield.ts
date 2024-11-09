@@ -147,12 +147,8 @@ export const validateField = (
 
   if (hasLower) {
     if (typeof hasLower !== "boolean" && typeof hasLower.value !== "boolean") {
-      throw new Error(`Field ${label} does not have a lowercase value`);
+      throw new Error(`Field ${label} has invalid hasLower value`);
     }
-
-    const lower = typeof hasLower === "boolean" ? hasLower : hasLower.value;
-    if (typeof lower === "undefined")
-      throw new Error(`Field ${label} does not have a lowercase value`);
 
     const regex = /[a-z]/;
     const condition = !regex.test(field);
@@ -163,15 +159,18 @@ export const validateField = (
 
     addError(condition, error);
   } else {
+    // Empty string or zero
     if (typeof hasLower === "string" || typeof hasLower === "number")
-      throw new Error(`Field ${label} does not have a lowercase value`);
+      throw new Error(`Field ${label} has invalid hasLower value`);
   }
 
   if (hasSpecial) {
-    const special =
-      typeof hasSpecial === "boolean" ? hasSpecial : hasSpecial.value;
-    if (typeof special === "undefined")
-      throw new Error(`Field ${label} has no special value`);
+    if (
+      typeof hasSpecial !== "boolean" &&
+      typeof hasSpecial.value !== "boolean"
+    ) {
+      throw new Error(`Field ${label} has invalid hasSpecial value`);
+    }
 
     const regex = /[^\w\s]/;
     const condition = !regex.test(field);
@@ -181,6 +180,9 @@ export const validateField = (
         : hasSpecial.error;
 
     addError(condition, error);
+  } else {
+    if (typeof hasSpecial === "string" || typeof hasSpecial === "number")
+      throw new Error(`Field ${label} has invalid hasSpecial value`);
   }
 
   if (hasNum) {
@@ -196,6 +198,9 @@ export const validateField = (
         : hasNum.error;
 
     addError(condition, error);
+  } else {
+    if (typeof hasNum === "string" || typeof hasNum === "number")
+      throw new Error(`Field ${label} has invalid hasNum value`);
   }
 
   if (equal) {
