@@ -146,9 +146,13 @@ export const validateField = (
   }
 
   if (hasLower) {
+    if (typeof hasLower !== "boolean" && typeof hasLower.value !== "boolean") {
+      throw new Error(`Field ${label} does not have a lowercase value`);
+    }
+
     const lower = typeof hasLower === "boolean" ? hasLower : hasLower.value;
     if (typeof lower === "undefined")
-      throw new Error(`Field ${label} has no lowercase value`);
+      throw new Error(`Field ${label} does not have a lowercase value`);
 
     const regex = /[a-z]/;
     const condition = !regex.test(field);
@@ -158,6 +162,9 @@ export const validateField = (
         : hasLower.error;
 
     addError(condition, error);
+  } else {
+    if (typeof hasLower === "string" || typeof hasLower === "number")
+      throw new Error(`Field ${label} does not have a lowercase value`);
   }
 
   if (hasSpecial) {
