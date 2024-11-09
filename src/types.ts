@@ -23,7 +23,7 @@ export interface RuleConditions {
   pattern?: RegExp | RegRuleValues;
   minLength?: number | NumRuleValues;
   maxLength?: number | NumRuleValues;
-  hasCap?: boolean | BoolRuleValues;
+  hasUpper?: boolean | BoolRuleValues;
   hasLower?: boolean | BoolRuleValues;
   hasNum?: boolean | BoolRuleValues;
   hasSpecial?: boolean | BoolRuleValues;
