@@ -42,12 +42,7 @@ export const validateField = (
   };
 
   if (required) {
-    if (
-      typeof required === "string" ||
-      (typeof required === "object" && typeof required.value !== "boolean") ||
-      typeof required === "function" ||
-      typeof required === "number"
-    ) {
+    if (typeof required !== "boolean" && typeof required.value !== "boolean") {
       throw new Error(`Field ${label} has invalid required value`);
     }
 
@@ -73,8 +68,6 @@ export const validateField = (
 
     const regex = pattern instanceof RegExp ? pattern : pattern.value;
 
-    if (!regex) throw new Error(`Field ${label} has no pattern`);
-
     const condition = !regex.test(field);
     const error =
       pattern instanceof RegExp || !pattern.error
@@ -83,15 +76,20 @@ export const validateField = (
 
     addError(condition, error);
   } else {
-    if (typeof pattern === "string")
+    if (typeof pattern === "string" || typeof pattern === "number")
       throw new Error(`Field ${label} has invalid pattern value`);
   }
 
   if (minLength) {
-    if (typeof minLength !== "number" && !minLength.value)
-      throw new Error(`Field ${label} has no length`);
+    if (
+      (typeof minLength !== "number" &&
+        (typeof minLength.value !== "number" || Number.isNaN(pattern))) ||
+      (typeof minLength === "number" && minLength < 0)
+    )
+      throw new Error(`Field ${label} has invalid minLength value`);
 
     const length = typeof minLength === "number" ? minLength : minLength.value;
+
     const condition = field.length < length;
     const error =
       typeof minLength === "number" || !minLength.error
@@ -99,6 +97,9 @@ export const validateField = (
         : minLength.error;
 
     addError(condition, error);
+  } else {
+    if (typeof minLength === "string" || typeof minLength === "number")
+      throw new Error(`Field ${label} has invalid minLength value`);
   }
 
   if (maxLength) {

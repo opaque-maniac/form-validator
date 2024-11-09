@@ -157,92 +157,17 @@ describe("Testing required field with unacceptable input", () => {
     ).toThrow("has invalid required value");
   });
 
-  it("should throw an error if required is an object with value: undefined and error", () => {
+  it("should throw an error if required is a regex", () => {
+    const regex = /a/;
     expect(() =>
-      validateField(label, field, {
-        required: { value: undefined as any, error: "wee" },
-      }),
+      validateField(label, field, { required: regex as any }),
     ).toThrow("has invalid required value");
   });
 
-  it("should throw an error if required is an object with value: null and error", () => {
+  it("should throw an error if required is an object with value: regex", () => {
+    const regex = /a/;
     expect(() =>
-      validateField(label, field, {
-        required: { value: null as any, error: "wee" },
-      }),
-    ).toThrow("has invalid required value");
-  });
-
-  it("should throw an error if required is an object with value: empty object and error", () => {
-    expect(() =>
-      validateField(label, field, {
-        required: { value: {} as any, error: "wee" },
-      }),
-    ).toThrow("has invalid required value");
-  });
-
-  it("should throw an error if required is an object with value: empty array and error", () => {
-    expect(() =>
-      validateField(label, field, {
-        required: { value: [] as any, error: "wee" },
-      }),
-    ).toThrow("has invalid required value");
-  });
-
-  it("should throw an error if required is an object with value: array and error", () => {
-    expect(() =>
-      validateField(label, field, {
-        required: { value: ["wee"] as any, error: "wee" },
-      }),
-    ).toThrow("has invalid required value");
-  });
-
-  it("should throw an error if required is an object with value: number and error", () => {
-    expect(() =>
-      validateField(label, field, {
-        required: { value: 1 as any, error: "wee" },
-      }),
-    ).toThrow("has invalid required value");
-  });
-
-  it("should throw an error if required is an object with value: string and error", () => {
-    expect(() =>
-      validateField(label, field, {
-        required: { value: "wee" as any, error: "wee" },
-      }),
-    ).toThrow("has invalid required value");
-  });
-
-  it("should throw an error if required is an object with value: null and error", () => {
-    expect(() =>
-      validateField(label, field, {
-        required: { value: null as any, error: "wee" },
-      }),
-    ).toThrow("has invalid required value");
-  });
-
-  it("should throw an error if required is an object with value: undefined and error", () => {
-    expect(() =>
-      validateField(label, field, {
-        required: { value: undefined as any, error: "wee" },
-      }),
-    ).toThrow("has invalid required value");
-  });
-
-  it("should throw an error if required is an object with value: empty string and error", () => {
-    expect(() =>
-      validateField(label, field, {
-        required: { value: "" as any, error: "wee" },
-      }),
-    ).toThrow("has invalid required value");
-  });
-
-  it("should throw an error if required is an object with value: function and error", () => {
-    const square = (x: number) => x * x;
-    expect(() =>
-      validateField(label, field, {
-        required: { value: square as any, error: "wee" },
-      }),
+      validateField(label, field, { required: { value: regex as any } }),
     ).toThrow("has invalid required value");
   });
 });

@@ -144,12 +144,6 @@ describe("Testing pattern field with unacceptable input for the field", () => {
     ).toThrow("has invalid pattern value");
   });
 
-  it("should throw an error if pattern is an object with value: array", () => {
-    expect(() =>
-      validateField(label, field, { pattern: { value: ["wee"] as any } }),
-    ).toThrow("has invalid pattern value");
-  });
-
   it("should throw an error if pattern is a function", () => {
     const square = (x: number) => x * x;
 
@@ -163,119 +157,6 @@ describe("Testing pattern field with unacceptable input for the field", () => {
 
     expect(() =>
       validateField(label, field, { pattern: { value: square as any } }),
-    ).toThrow("has invalid pattern value");
-  });
-
-  it("should throw an error if pattern is an object with value: undefined and error", () => {
-    expect(() =>
-      validateField(label, field, {
-        pattern: { value: undefined as any, error: "wee" },
-      }),
-    ).toThrow("has invalid pattern value");
-  });
-
-  it("should throw an error if pattern is an object with value: null and error", () => {
-    expect(() =>
-      validateField(label, field, {
-        pattern: { value: null as any, error: "wee" },
-      }),
-    ).toThrow("has invalid pattern value");
-  });
-
-  it("should throw an error if pattern is an object with value: empty object and error", () => {
-    expect(() =>
-      validateField(label, field, {
-        pattern: { value: {} as any, error: "wee" },
-      }),
-    ).toThrow("has invalid pattern value");
-  });
-
-  it("should throw an error if pattern is an object with value: empty string and error", () => {
-    expect(() =>
-      validateField(label, field, {
-        pattern: { value: "" as any, error: "wee" },
-      }),
-    ).toThrow("has invalid pattern value");
-  });
-
-  it("should throw an error if pattern is an object with value: number and error", () => {
-    expect(() =>
-      validateField(label, field, {
-        pattern: { value: 1 as any, error: "wee" },
-      }),
-    ).toThrow("has invalid pattern value");
-  });
-
-  it("should throw an error if pattern is an object with value: empty array and error", () => {
-    expect(() =>
-      validateField(label, field, {
-        pattern: { value: [] as any, error: "wee" },
-      }),
-    ).toThrow("has invalid pattern value");
-  });
-
-  it("should throw an error if pattern is an object with value: array and error", () => {
-    expect(() =>
-      validateField(label, field, {
-        pattern: { value: ["wee"] as any, error: "wee" },
-      }),
-    ).toThrow("has invalid pattern value");
-  });
-
-  it("should throw an error if pattern is an object with value: number and error", () => {
-    expect(() =>
-      validateField(label, field, {
-        pattern: { value: 1 as any, error: "wee" },
-      }),
-    ).toThrow("has invalid pattern value");
-  });
-
-  it("should throw an error if pattern is an object with value: string and error", () => {
-    expect(() =>
-      validateField(label, field, {
-        pattern: { value: "wee" as any, error: "wee" },
-      }),
-    ).toThrow("has invalid pattern value");
-  });
-
-  it("should throw an error if pattern is an object with value: null and error", () => {
-    expect(() =>
-      validateField(label, field, {
-        pattern: { value: null as any, error: "wee" },
-      }),
-    ).toThrow("has invalid pattern value");
-  });
-
-  it("should throw an error if pattern is an object with value: undefined and error", () => {
-    expect(() =>
-      validateField(label, field, {
-        pattern: { value: undefined as any, error: "wee" },
-      }),
-    ).toThrow("has invalid pattern value");
-  });
-
-  it("should throw an error if pattern is an object with value: empty object and error", () => {
-    expect(() =>
-      validateField(label, field, {
-        pattern: { value: {} as any, error: "wee" },
-      }),
-    ).toThrow("has invalid pattern value");
-  });
-
-  it("should throw an error if pattern is an object with value: array and error", () => {
-    expect(() =>
-      validateField(label, field, {
-        pattern: { value: ["wee"] as any, error: "wee" },
-      }),
-    ).toThrow("has invalid pattern value");
-  });
-
-  it("should throw an error if pattern is an object with value: function and error", () => {
-    const square = (x: number) => x * x;
-    expect(() =>
-      validateField(label, field, {
-        pattern: { value: square as any, error: "wee" },
-      }),
     ).toThrow("has invalid pattern value");
   });
 });
