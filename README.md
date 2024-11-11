@@ -43,40 +43,41 @@ The `ruleObj` is an object that contains the rules for the form fields. It has t
 
 1. **required**:
 ```typescript
-boolean | { value: boolean, error: string }
+boolean | { value: boolean, error?: string }
 ```
 2. **pattern**:
 ```typescript
-RegExp | { value: RegExp, error: string }
+RegExp | { value: RegExp, error?: string }
 ```
 3. **minLength**:
 ```typescript
-number | { value: number, error: string }
+number | { value: number, error?: string }
 ```
 4. **maxLength**:
 ```typescript
-number | { value: number, error: string }
+number | { value: number, error?: string }
 ```
 5. **hasUpper**:
 ```typescript
-boolean | { value: boolean, error: string }
+boolean | { value: boolean, error?: string }
 ```
 6. **hasLower**:
 ```typescript
-boolean | { value: boolean, error: string }
+boolean | { value: boolean, error?: string }
 ```
 7. **hasNumber**:
 ```typescript
-boolean | { value: boolean, error: string }
+boolean | { value: boolean, error?: string }
 ```
 8. hasSpecial:
 ```typescript
-boolean | { value: boolean, error: string }
+boolean | { value: boolean, error?: string }
 ```
 9. equal:
 ```typescript
-string | { value: string, error: string }
+string | { value: string, error?: string }
 ```
+- __The error property is optional__
 
 Example:
 ```typescript
