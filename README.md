@@ -8,9 +8,9 @@ _Installing is not possible because it isn't published yet_
 ## Usage
 ## Form Validator
 ```typescript
-import { formValidator } from 'form-validator';
+import { validateForm } from 'form-validator';
 
-const {valid, errors} = formValidator(formObj, ruleObj);
+const {valid, errors} = validateForm(formObj, ruleObj);
 ```
 
 ### Form Object
@@ -77,7 +77,7 @@ boolean | { value: boolean, error?: string }
 ```typescript
 string | { value: string, error?: string }
 ```
-- __The error property is optional__
+__The error property is optional. If none is provided a default error will show__
 
 Example:
 ```typescript
@@ -148,3 +148,62 @@ Example:
 
 ## Field Validator
 You can also just verify one individual field.
+```typescript
+import { validateField } from 'form-validator';
+
+const {valid, errors} = validateField(label, field, rules);
+```
+
+### Label
+- The `label` is a string that represents the name of the field.
+- It is mostly used to generate the default error messages and is __required__.
+
+### Field
+- The `field` is a string that represents the value of the field.
+- It is __required__.
+
+### Rules
+- The `rules` is an object that contains the rules for the field.
+- It is the same as the __Rule__ object in the __Rule Object__.
+- It is __required__.
+- An empty object can be passed if no rules are needed.
+- If invalid rules are function, the function will return valid as true and no errors.
+- If invalid data types are passed, it will throw an error.
+
+Example:
+```typescript
+const {valid, errors} = validateField('Username', 'john_doe', {
+    required: { value: true, error: 'Username is required' },
+    minLength: { value: 3, error: 'Username must be at least 3 characters' },
+    maxLength: { value: 20, error: 'Username must be at most 20 characters' },
+    pattern: { value: /^[a-zA-Z0-9_]+$/, error: 'Username must contain only letters, numbers and underscores' }
+});
+```
+
+### Return Value
+The `fieldValidator` function returns an object of type:
+```typescript
+{
+    valid: boolean,
+    errors: string[]
+}
+```
+
+- The `valid` property is a boolean that indicates if the field is valid or not.
+- The `errors` property is an array of error messages.
+
+Example:
+```typescript
+{
+    valid: true,
+    errors: []
+}
+```
+```typescript
+{
+    valid: false,
+    errors: ['Username must be at least 3 characters', 'Username must contain only letters, numbers and underscores']
+}
+```
+
+The validateField function is actually being used in the formValidator function to validate each field.
