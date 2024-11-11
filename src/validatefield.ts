@@ -8,7 +8,6 @@
  * @returns {ValidateFieldReturn} - object containing validation result
  */
 
-import { spec } from "node:test/reporters";
 import type {
   BoolRuleValues,
   NumRuleValues,
