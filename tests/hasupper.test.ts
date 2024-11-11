@@ -1,30 +1,30 @@
 import { describe, it, expect } from "vitest";
 import { validateField } from "../src/validatefield";
 
-describe("Testing hasCap field with acceptable input for the field", () => {
+describe("Testing hasUpper field with acceptable input for the field", () => {
   const label = "name";
   const field = "John Doe";
 
-  it("should pass when hasCap is valid", () => {
+  it("should pass when hasUpper is valid", () => {
     const result = validateField(label, field, { hasUpper: true });
     expect(result).toEqual({ valid: true, errors: [] });
   });
 
-  it("should pass when hasCap is object with valid value property", () => {
+  it("should pass when hasUpper is object with valid value property", () => {
     const result = validateField(label, field, { hasUpper: { value: true } });
     expect(result).toEqual({ valid: true, errors: [] });
   });
 
-  it("should pass when hasCap is not provided", () => {
+  it("should pass when hasUpper is not provided", () => {
     const result = validateField(label, field, { required: true });
     expect(result).toEqual({ valid: true, errors: [] });
   });
 
-  it("should pass when hasCap is an object with value: number and error", () => {
+  it("should pass when hasUpper is an object with value: number and error", () => {
     expect(
       validateField(label, field, {
         hasUpper: { value: true, error: "wee" },
-      })
+      }),
     ).toEqual({ valid: true, errors: [] });
   });
 
@@ -36,11 +36,22 @@ describe("Testing hasCap field with acceptable input for the field", () => {
   });
 });
 
-describe("Test hasCap should fail if string does not have a capital letter", () => {
+describe("Test hasUpper should fail if string does not have a capital letter", () => {
   const label = "name";
-  const field = "John Doe";
 
-  it("should fail when hasCap is invalid", () => {
+  it("should pass if hasUpper is false", () => {
+    const results = validateField(label, "john doe", { hasUpper: false });
+    expect(results).toEqual({ valid: true, errors: [] });
+  });
+
+  it("should pass if hasUpper is object with value: false", () => {
+    const results = validateField(label, "john doe", {
+      hasUpper: { value: false },
+    });
+    expect(results).toEqual({ valid: true, errors: [] });
+  });
+
+  it("should fail when hasUpper is invalid", () => {
     const result = validateField(label, "john doe", { hasUpper: true });
     expect(result).toEqual({
       valid: false,
@@ -48,7 +59,7 @@ describe("Test hasCap should fail if string does not have a capital letter", () 
     });
   });
 
-  it("should fail when hasCap is object with invalid value property", () => {
+  it("should fail when hasUpper is object with invalid value property", () => {
     const result = validateField(label, "john doe", {
       hasUpper: { value: true },
     });
@@ -58,7 +69,7 @@ describe("Test hasCap should fail if string does not have a capital letter", () 
     });
   });
 
-  it("should fail when hasCap is object with invalid value property", () => {
+  it("should fail when hasUpper is object with invalid value property", () => {
     const result = validateField(label, "john doe", {
       hasUpper: { value: true, error: "wee" },
     });
@@ -69,55 +80,55 @@ describe("Test hasCap should fail if string does not have a capital letter", () 
   });
 });
 
-describe("Testing hasCap field with unacceptable input for the field", () => {
+describe("Testing hasUpper field with unacceptable input for the field", () => {
   const label = "name";
   const field = "John Doe";
 
-  it("should throw an error if hasCap is a string", () => {
+  it("should throw an error if hasUpper is a string", () => {
     expect(() =>
-      validateField(label, field, { hasUpper: "wee" as any })
+      validateField(label, field, { hasUpper: "wee" as any }),
     ).toThrow("invalid hasUpper value");
   });
 
-  it("should throw an error if hasCap is an object with value: string", () => {
+  it("should throw an error if hasUpper is an object with value: string", () => {
     expect(() =>
-      validateField(label, field, { hasUpper: { value: "wee" as any } })
+      validateField(label, field, { hasUpper: { value: "wee" as any } }),
     ).toThrow("invalid hasUpper value");
   });
 
-  it("should throw an error if hasCap is an empty string", () => {
+  it("should throw an error if hasUpper is an empty string", () => {
     expect(() => validateField(label, field, { hasUpper: "" as any })).toThrow(
-      "invalid hasUpper value"
+      "invalid hasUpper value",
     );
   });
 
-  it("should throw an error if hasCap is an object with value: empty string", () => {
+  it("should throw an error if hasUpper is an object with value: empty string", () => {
     expect(() =>
-      validateField(label, field, { hasUpper: { value: "" as any } })
+      validateField(label, field, { hasUpper: { value: "" as any } }),
     ).toThrow("invalid hasUpper value");
   });
 
-  it("should throw an error if hasCap is a regex", () => {
+  it("should throw an error if hasUpper is a regex", () => {
     expect(() =>
-      validateField(label, field, { hasUpper: /[A-Z]/ as any })
+      validateField(label, field, { hasUpper: /[A-Z]/ as any }),
     ).toThrow("invalid hasUpper value");
   });
 
-  it("should throw an error if hasCap is an object with value: regex", () => {
+  it("should throw an error if hasUpper is an object with value: regex", () => {
     expect(() =>
-      validateField(label, field, { hasUpper: { value: /[A-Z]/ as any } })
+      validateField(label, field, { hasUpper: { value: /[A-Z]/ as any } }),
     ).toThrow("invalid hasUpper value");
   });
 
-  it("should throw an error if hasCap is a number", () => {
+  it("should throw an error if hasUpper is a number", () => {
     expect(() => validateField(label, field, { hasUpper: 2 as any })).toThrow(
-      "invalid hasUpper value"
+      "invalid hasUpper value",
     );
   });
 
-  it("should throw an error if hasCap is an object with value: number", () => {
+  it("should throw an error if hasUpper is an object with value: number", () => {
     expect(() =>
-      validateField(label, field, { hasUpper: { value: 0 as any } })
+      validateField(label, field, { hasUpper: { value: 0 as any } }),
     ).toThrow("invalid hasUpper value");
   });
 
@@ -128,76 +139,76 @@ describe("Testing hasCap field with unacceptable input for the field", () => {
     });
   });
 
-  it("should throw an error if hasCap is an object with value: null", () => {
+  it("should throw an error if hasUpper is an object with value: null", () => {
     expect(() =>
-      validateField(label, field, { hasUpper: { value: null as any } })
+      validateField(label, field, { hasUpper: { value: null as any } }),
     ).toThrow("invalid hasUpper value");
   });
 
-  it("should return valid: true and errors:[] if hasCap is undefined", () => {
+  it("should return valid: true and errors:[] if hasUpper is undefined", () => {
     expect(validateField(label, field, { hasUpper: undefined as any })).toEqual(
       {
         valid: true,
         errors: [],
-      }
+      },
     );
   });
 
-  it("should throw an error if hasCap is an object with value: undefined", () => {
+  it("should throw an error if hasUpper is an object with value: undefined", () => {
     expect(() =>
-      validateField(label, field, { hasUpper: { value: undefined as any } })
+      validateField(label, field, { hasUpper: { value: undefined as any } }),
     ).toThrow("invalid hasUpper value");
   });
 
-  it("should throw an error if hasCap is an empty object", () => {
+  it("should throw an error if hasUpper is an empty object", () => {
     expect(() => validateField(label, field, { hasUpper: {} as any })).toThrow(
-      "invalid hasUpper value"
+      "invalid hasUpper value",
     );
   });
 
-  it("should throw an error if hasCap is an object with value: empty object", () => {
+  it("should throw an error if hasUpper is an object with value: empty object", () => {
     expect(() =>
-      validateField(label, field, { hasUpper: { value: {} as any } })
+      validateField(label, field, { hasUpper: { value: {} as any } }),
     ).toThrow("invalid hasUpper value");
   });
 
-  it("should throw an error if hasCap is an empty array", () => {
+  it("should throw an error if hasUpper is an empty array", () => {
     expect(() => validateField(label, field, { hasUpper: [] as any })).toThrow(
-      "invalid hasUpper value"
+      "invalid hasUpper value",
     );
   });
 
-  it("should throw an error if hasCap is an object with value: empty array", () => {
+  it("should throw an error if hasUpper is an object with value: empty array", () => {
     expect(() =>
-      validateField(label, field, { hasUpper: { value: [] as any } })
+      validateField(label, field, { hasUpper: { value: [] as any } }),
     ).toThrow("invalid hasUpper value");
   });
 
-  it("should throw an error if hasCap is an array", () => {
+  it("should throw an error if hasUpper is an array", () => {
     expect(() =>
-      validateField(label, field, { hasUpper: ["wee"] as any })
+      validateField(label, field, { hasUpper: ["wee"] as any }),
     ).toThrow("invalid hasUpper value");
   });
 
-  it("should throw an error if hasCap is an object with value: array", () => {
+  it("should throw an error if hasUpper is an object with value: array", () => {
     expect(() =>
-      validateField(label, field, { hasUpper: { value: ["wee"] as any } })
+      validateField(label, field, { hasUpper: { value: ["wee"] as any } }),
     ).toThrow("invalid hasUpper value");
   });
 
-  it("should throw an error if hasCap is a function", () => {
+  it("should throw an error if hasUpper is a function", () => {
     const square = (x: number) => x * x;
 
     expect(() =>
-      validateField(label, field, { hasUpper: square as any })
+      validateField(label, field, { hasUpper: square as any }),
     ).toThrow("invalid hasUpper value");
   });
 
-  it("should throw an error if hasCap is an object with value: function", () => {
+  it("should throw an error if hasUpper is an object with value: function", () => {
     const square = (x: number) => x * x;
 
     expect(() =>
-      validateField(label, field, { hasUpper: { value: square as any } })
+      validateField(label, field, { hasUpper: { value: square as any } }),
     ).toThrow("invalid hasUpper value");
   });
 });

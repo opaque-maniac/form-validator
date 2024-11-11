@@ -42,6 +42,16 @@ describe("Test hasNum should fail if string does not have a number", () => {
   const label = "name";
   const field = "JOHN DOE";
 
+  it("should pass if hasNum is false", () => {
+    const results = validateField(label, field, { hasNum: false });
+    expect(results).toEqual({ valid: true, errors: [] });
+  });
+
+  it("should pass if hasNum is object with value: false", () => {
+    const results = validateField(label, field, { hasNum: { value: false } });
+    expect(results).toEqual({ valid: true, errors: [] });
+  });
+
   it("should fail when hasNum is invalid", () => {
     const result = validateField(label, field, { hasNum: true });
     expect(result).toEqual({

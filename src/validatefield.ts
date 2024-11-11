@@ -8,6 +8,7 @@
  * @returns {ValidateFieldReturn} - object containing validation result
  */
 
+import { spec } from "node:test/reporters";
 import type {
   BoolRuleValues,
   NumRuleValues,
@@ -21,8 +22,15 @@ import type {
 export const validateField = (
   label: string,
   field: string,
-  rule: RuleConditions
+  rule: RuleConditions,
 ): ValidateFieldReturn => {
+  if (typeof rule !== "object" || rule === null || Array.isArray(rule))
+    throw new Error(`Field ${label} has invalid rule`);
+
+  if (typeof label !== "string") throw new Error("Label is not a string");
+
+  if (typeof field !== "string") throw new Error("Field is not a string");
+
   const {
     required,
     pattern,
@@ -34,9 +42,6 @@ export const validateField = (
     hasSpecial,
     equal,
   } = rule;
-
-  if (typeof field !== "string")
-    throw new Error(`Field ${label} is not a string`);
 
   let valid: boolean = true;
   let errors: string[] = [];
@@ -138,7 +143,7 @@ export const validateField = (
 const handleRequired = (
   required: boolean | BoolRuleValues,
   label: string,
-  field: string
+  field: string,
 ) => {
   if (typeof required !== "boolean" && typeof required.value !== "boolean") {
     throw new Error(`Field ${label} has invalid required value`);
@@ -158,7 +163,7 @@ const handleRequired = (
 const handlePattern = (
   pattern: RegExp | RegRuleValues,
   label: string,
-  field: string
+  field: string,
 ) => {
   // see if pattern is not a regex or pattern.value is not a regex
   if (!(pattern instanceof RegExp) && !(pattern.value instanceof RegExp))
@@ -179,7 +184,7 @@ const handlePattern = (
 const handleMinLength = (
   minLength: number | NumRuleValues,
   label: string,
-  field: string
+  field: string,
 ) => {
   if (
     (typeof minLength !== "number" &&
@@ -203,7 +208,7 @@ const handleMinLength = (
 const handleMaxLength = (
   maxLength: number | NumRuleValues,
   label: string,
-  field: string
+  field: string,
 ) => {
   if (
     (typeof maxLength !== "number" &&
@@ -226,18 +231,15 @@ const handleMaxLength = (
 const handleHasUpper = (
   hasUpper: boolean | BoolRuleValues,
   label: string,
-  field: string
+  field: string,
 ) => {
   if (typeof hasUpper !== "boolean" && typeof hasUpper.value !== "boolean") {
     throw new Error(`Field ${label} has invalid hasUpper value`);
   }
 
   const cap = typeof hasUpper === "boolean" ? hasUpper : hasUpper.value;
-  if (typeof cap === "undefined")
-    throw new Error(`Field ${label} has no uppercase value`);
-
   const regex = /[A-Z]/;
-  const condition = !regex.test(field);
+  const condition = cap ? !regex.test(field) : regex.test(field);
   const error =
     typeof hasUpper === "boolean" || !hasUpper.error
       ? `Field ${label} does not have an uppercase character`
@@ -250,14 +252,15 @@ const handleHasUpper = (
 const handleHasLower = (
   hasLower: boolean | BoolRuleValues,
   label: string,
-  field: string
+  field: string,
 ) => {
   if (typeof hasLower !== "boolean" && typeof hasLower.value !== "boolean") {
     throw new Error(`Field ${label} has invalid hasLower value`);
   }
 
+  const lower = typeof hasLower === "boolean" ? hasLower : hasLower.value;
   const regex = /[a-z]/;
-  const condition = !regex.test(field);
+  const condition = lower ? !regex.test(field) : regex.test(field);
   const error =
     typeof hasLower === "boolean" || !hasLower.error
       ? `Field ${label} does not have a lowercase character`
@@ -270,7 +273,7 @@ const handleHasLower = (
 const handleHasSpecial = (
   hasSpecial: boolean | BoolRuleValues,
   label: string,
-  field: string
+  field: string,
 ) => {
   if (
     typeof hasSpecial !== "boolean" &&
@@ -279,8 +282,10 @@ const handleHasSpecial = (
     throw new Error(`Field ${label} has invalid hasSpecial value`);
   }
 
+  const special =
+    typeof hasSpecial === "boolean" ? hasSpecial : hasSpecial.value;
   const regex = /[^\w\s]/;
-  const condition = !regex.test(field);
+  const condition = special ? !regex.test(field) : regex.test(field);
   const error =
     typeof hasSpecial === "boolean" || !hasSpecial.error
       ? `Field ${label} does not have a special character`
@@ -293,13 +298,14 @@ const handleHasSpecial = (
 const handleHasNum = (
   hasNum: boolean | BoolRuleValues,
   label: string,
-  field: string
+  field: string,
 ) => {
   if (typeof hasNum !== "boolean" && typeof hasNum.value !== "boolean")
     throw new Error(`Field ${label} has invalid hasNum value`);
 
+  const num = typeof hasNum === "boolean" ? hasNum : hasNum.value;
   const regex = /[0-9]/;
-  const condition = !regex.test(field);
+  const condition = num ? !regex.test(field) : regex.test(field);
   const error =
     typeof hasNum === "boolean" || !hasNum.error
       ? `Field ${label} does not have a number`
@@ -312,7 +318,7 @@ const handleHasNum = (
 const handleEqual = (
   equal: string | StrRuleValues,
   label: string,
-  field: string
+  field: string,
 ) => {
   if (typeof equal !== "string" && typeof equal.value !== "string")
     throw new Error(`Field ${label} has invalid equal value`);

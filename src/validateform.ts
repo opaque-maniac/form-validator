@@ -20,19 +20,24 @@ export const validateForm = (
   data: FormValueData,
   rules: RuleObj,
 ): ValidationReturn => {
+  if (typeof data !== "object" || data === null || Array.isArray(data)) {
+    throw new Error("data: FormValueData must be an object");
+  }
+
+  if (typeof rules !== "object" || rules === null || Array.isArray(rules)) {
+    throw new Error("data: FormValueData must be an object");
+  }
+
   const fErrors: FormValidationErrors = {};
   let isValid: boolean = true;
-
-  if (Object.keys(data).length === 0) {
-    throw new Error("Empty object passed as form data");
-  }
 
   for (let [k, v] of Object.entries(data)) {
     const _rules = rules[k];
 
     if (!_rules) {
-      throw new Error(`Field ${k} does not have a validation rule`);
+      continue;
     }
+
     const { valid, errors } = validateField(k, v, _rules);
     isValid = isValid && valid;
     fErrors[k] = errors;

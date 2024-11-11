@@ -42,6 +42,18 @@ describe("Test hasSpecial should fail if string does not have a special letter",
   const label = "name";
   const field = "JOHN DOE";
 
+  it("should pass when hasspecial is false", () => {
+    const results = validateField(label, field, { hasSpecial: false });
+    expect(results).toEqual({ valid: true, errors: [] });
+  });
+
+  it("should pass when hasspecial is object with value: false", () => {
+    const results = validateField(label, field, {
+      hasSpecial: { value: false },
+    });
+    expect(results).toEqual({ valid: true, errors: [] });
+  });
+
   it("should fail when hasSpecial is invalid", () => {
     const result = validateField(label, field, { hasSpecial: true });
     expect(result).toEqual({
