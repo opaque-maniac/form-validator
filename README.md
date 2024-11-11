@@ -77,6 +77,10 @@ boolean | { value: boolean, error?: string }
 ```typescript
 string | { value: string, error?: string }
 ```
+10. custom:
+```typescript
+(value: string) => boolean | { value: (value: string) => boolean, error?: string }
+```
 __The error property is optional. If none is provided a default error will show__
 
 Example:

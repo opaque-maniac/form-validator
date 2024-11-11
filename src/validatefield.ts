@@ -9,7 +9,9 @@
  */
 
 import type {
+  boolfunc,
   BoolRuleValues,
+  CustomRuleValue,
   NumRuleValues,
   RegRuleValues,
   RuleConditions,
@@ -353,14 +355,19 @@ const handleEqual = (
 };
 
 const handleCustom = (
-  custom: (field: string) => boolean,
+  custom: boolfunc | CustomRuleValue,
   label: string,
   field: string,
 ) => {
-  if (typeof custom !== "function")
+  if (typeof custom !== "function" && typeof custom.value !== "function")
     throw new Error(`Field ${label} has invalid custom value`);
 
-  const condition = !custom(field);
-  const error = `Field ${label} is invalid`;
+  const func = typeof custom === "function" ? custom : custom.value;
+  const error =
+    typeof custom !== "function"
+      ? custom.error
+      : `Field ${label} does not pass custom test`;
+  const condition = !func(field);
+
   return { condition, error };
 };

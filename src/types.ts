@@ -18,6 +18,12 @@ export interface StrRuleValues extends RuleValues {
   value: string;
 }
 
+export type boolfunc = (str: string) => boolean;
+
+export interface CustomRuleValue extends RuleValues {
+  value: boolfunc;
+}
+
 export interface RuleConditions {
   required?: boolean | BoolRuleValues;
   pattern?: RegExp | RegRuleValues;
@@ -28,7 +34,7 @@ export interface RuleConditions {
   hasNum?: boolean | BoolRuleValues;
   hasSpecial?: boolean | BoolRuleValues;
   equal?: string | StrRuleValues;
-  custom?: (field: string) => boolean;
+  custom?: boolfunc | CustomRuleValue;
 }
 
 export interface RuleObj {
