@@ -40,6 +40,7 @@ export const validateField = (
     hasNum,
     hasSpecial,
     equal,
+    custom,
   } = rule;
 
   let valid: boolean = true;
@@ -130,6 +131,18 @@ export const validateField = (
   } else {
     if (typeof equal === "boolean")
       throw new Error(`Field ${label} has invalid equal value`);
+  }
+
+  if (custom) {
+    const results = handleCustom(custom, label, field);
+    addError(results);
+  } else {
+    if (
+      typeof custom === "string" ||
+      typeof custom === "number" ||
+      typeof custom === "boolean"
+    )
+      throw new Error(`Field ${label} has invalid custom value`);
   }
 
   return {
@@ -336,5 +349,18 @@ const handleEqual = (
         }`
       : equal.error;
 
+  return { condition, error };
+};
+
+const handleCustom = (
+  custom: (field: string) => boolean,
+  label: string,
+  field: string,
+) => {
+  if (typeof custom !== "function")
+    throw new Error(`Field ${label} has invalid custom value`);
+
+  const condition = !custom(field);
+  const error = `Field ${label} is invalid`;
   return { condition, error };
 };

@@ -28,6 +28,7 @@ export interface RuleConditions {
   hasNum?: boolean | BoolRuleValues;
   hasSpecial?: boolean | BoolRuleValues;
   equal?: string | StrRuleValues;
+  custom?: (field: string) => boolean;
 }
 
 export interface RuleObj {
