@@ -37,43 +37,43 @@ The `ruleObj` is an object that contains the rules for the form fields. It has t
     [key: string]: Rule
 }
 ```
-The key is the name of the field and the value is the rule object.
-The __Rule__ object is an object that contains the rules for the field with a key which is the name of the rule and the value is the value of the rule.
-It has the following properties:
+- The key is the name of the field and the value is the rule object.
+- The __Rule__ object is an object that contains the rules for the field with a key which is the name of the rule and the value is the value of the rule.
+- It has the following properties:
 
-- **required**:
+1. **required**:
 ```typescript
 boolean | { value: boolean, error: string }
 ```
-- **pattern**:
+2. **pattern**:
 ```typescript
 RegExp | { value: RegExp, error: string }
 ```
-- **minLength**:
+3. **minLength**:
 ```typescript
 number | { value: number, error: string }
 ```
-- **maxLength**:
+4. **maxLength**:
 ```typescript
 number | { value: number, error: string }
 ```
-- **hasUpper**:
+5. **hasUpper**:
 ```typescript
 boolean | { value: boolean, error: string }
 ```
-- **hasLower**:
+6. **hasLower**:
 ```typescript
 boolean | { value: boolean, error: string }
 ```
-- **hasNumber**:
+7. **hasNumber**:
 ```typescript
 boolean | { value: boolean, error: string }
 ```
-- hasSpecial:
+8. hasSpecial:
 ```typescript
 boolean | { value: boolean, error: string }
 ```
-- equal:
+9. equal:
 ```typescript
 string | { value: string, error: string }
 ```
@@ -102,28 +102,48 @@ Example:
     }
 }
 ```
-The above example shows the rules for a form with username, password and email fields.
-The requred rule is if a field is required or not.
-The pattern rule is a regular expression that the field must match.
-The minLength and maxLength rules are the minimum and maximum length of the field.
-The hasUpper, hasLower, hasNumber and hasSpecial rules are for password fields to check if the password contains at least one uppercase letter, lowercase letter, number and special character.
-The equal rule is for password confirmation fields to check if the field is equal to the value of the field.
+- The above example shows the rules for a form with username, password and email fields.
+- The requred rule is if a field is required or not.
+- The pattern rule is a regular expression that the field must match.
+- The minLength and maxLength rules are the minimum and maximum length of the field.
+- The hasUpper, hasLower, hasNumber and hasSpecial rules are for password fields to check if the password contains at least one uppercase letter, lowercase letter, number and special character.
+- The equal rule is for password confirmation fields to check if the field is equal to the value of the field.
 
 ### Return Value
-The `formValidator` function returns an object with the following properties:
-- **valid**:
-```typescript
-boolean
-```
-- **errors**:
+The `formValidator` function returns an object of type:
 ```typescript
 {
-    [key: string]: string[]
+    valid: boolean,
+    errors: {
+        [key: string]: string[]
+    }
 }
 ```
 
-The `valid` property is a boolean that indicates if the form is valid or not.
-The `errors` property is an object that contains the errors for the fields. The key is the name of the field and the value is an array of error messages.
+- The `valid` property is a boolean that indicates if the form is valid or not.
+- The `errors` property is an object that contains the errors for the fields. The key is the name of the field and the value is an array of error messages.
+
+Example:
+```typescript
+{
+    valid: true,
+    errors: {
+        username: [],
+        password: [],
+        email: []
+    },
+}
+```
+```typescript
+{
+    valid: false,
+    errors: {
+        username: ['Username must be at least 3 characters', 'Username must contain only letters, numbers and underscores'],
+        password: ['Password must contain at least one uppercase letter', 'Password must contain at least one special character'],
+        email: ['Email is invalid']
+    }
+}
+```
 
 ## Field Validator
 You can also just verify one individual field.
