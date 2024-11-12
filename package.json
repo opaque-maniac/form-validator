@@ -8,6 +8,7 @@
     "/dist"
   ],
   "scripts": {
+    "prepare": "tsc",
     "format": "prettier --write .",
     "build": "tsc",
     "test": "vitest --watch"
