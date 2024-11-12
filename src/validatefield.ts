@@ -364,7 +364,7 @@ const handleCustom = (
 
   const func = typeof custom === "function" ? custom : custom.value;
   const error =
-    typeof custom !== "function"
+    typeof custom !== "function" && custom.error
       ? custom.error
       : `Field ${label} does not pass custom test`;
   const condition = !func(field);
