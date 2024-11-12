@@ -3,7 +3,11 @@
 Simple form validator micro library written in typescript
 
 ## Installation
-_Installing is not possible because it isn't published yet_
+Run this command from your project root.
+
+```bash
+npm install opaque-maniac/form-validator
+```
 
 ## Usage
 ## Form Validator
